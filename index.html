@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
   <title>Messy Speaker</title>
@@ -172,7 +173,7 @@
 
         } else {
 
-            alert( '沒有安裝 MetaMask' );
+            alert( 'You havn\'t install MetaMask' );
 
         }
 
@@ -273,13 +274,8 @@
 </script>
 </head>
 <body class="container">
-  <h1>Messy Speaker !! beta</h1>
-  <br>
-  <br>
-  <br>
+   <font color="#39c5bb" size=7 face="Comic Sans MS"><b><h1>Messy Speaker !! BETA</h1><b></font>
   <div class="table-responsive"> 
-  <h4>The String in contract NOW:</h4>
-  <h1 id="sth">SHOW ME WHAT YOU GOT</h1>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -302,8 +298,9 @@
     </table>
   </div>
   
-  <h5>Say SOMETHING</h5><input type="text" size="150" id="usay" />
-  <h5>Price (BCH)</h5><input type="number" min="0.00" step="0.0005" size="50" id="urprice" />
+  <!--<h5>Say SOMETHING</h5><input type="text" size="150" id="usay" />-->
+  <h5>Say SOMETHING :</h5><textarea id="usay" style="width: 340px; height: 50px" rows="10" cols="80">what do you want 2 say!?</textarea>
+  <h5>Price (BCH) :</h5><input type="number" min="0.00" step="0.0005" size="50" id="urprice" />
   <a href="#" onclick="connect2metamask(document.getElementById('usay').value, document.getElementById('urprice').value)" class="btn btn-primary">Speak Out Loud</a>
   <h5>TIPS : Input something you want to say and pay me some BCH <br><br>
   I will use my Noise account Messy create a post with something you want to saying<BR><br>
@@ -311,6 +308,9 @@
   After finishing payment you need to Refresh the webpage to see the new change on chain<BR><BR>
   And also check the Noise 酷耶 channel to see Messy Speaker saying your words!!<br><br>
   If you meet any problem just send message to my Noise Post https://noise.cash/post/17n0j246<h5>
+  <BR>
+  <font color="red" size=7 face="Comic Sans MS"><b><h4>The String in contract NOW:</h4><b></font>
+  <font color="red" size=7 face="Comic Sans MS"><b><h1 id="sth">SHOW ME WHAT YOU GOT</h1><b></font>
 </body>
 
 </html>
