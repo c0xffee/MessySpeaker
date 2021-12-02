@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Messy Speaker</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <!--<script src="https://cdn.jsdelivr.net/npm/web3@0.20.1/dist/web3.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script >
+    let myABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_sth",
+				"type": "string"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "buyer",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "say_sth",
+				"type": "string"
+			}
+		],
+		"name": "aPayment",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "HighestPrice",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "gap",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "now_gap",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "now_price",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_say_sth",
+				"type": "string"
+			}
+		],
+		"name": "pay_me_and_say_sth",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_gap",
+				"type": "uint256"
+			}
+		],
+		"name": "setGap",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_price",
+				"type": "uint256"
+			}
+		],
+		"name": "setPrice",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "something",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "what_do_you_say",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
+    $(function(){
+
+        if (window.web3) {
+
+            // 有安裝 MetaMask
+
+        } else {
+
+            alert( '沒有安裝 MetaMask' );
+
+        }
+
+    });
+    
+    async function pay_me_and_say_sth(usay, urprice, address) { 
+    
+        let res = await contract.methods.pay_me_and_say_sth(usay).send({from:address, value:urprice})
+        console.log(res.events.aPayment.returnValues.buyer);
+        console.log(res.events.aPayment.returnValues.price);
+        
+        
+    };
+    
+    
+    window.web3 = new Web3(window.web3.currentProvider);
+    
+    async function connect2metamask(usay, urprice) {
+        
+        urprice = Web3.utils.toWei(urprice)
+        let address;
+        address = await ethereum.request({ method: 'eth_requestAccounts' })
+        address = address[0]
+    
+        console.log(address)
+        pay_me_and_say_sth(usay, urprice, address);
+        
+        
+    }
+        
+    
+    async function get_data() { 
+        let sth   = await contract.methods.what_do_you_say().call();
+        var price = await contract.methods.now_price().call();
+        var gap   = await contract.methods.now_gap().call();
+        
+        price = parseInt(price)
+        gap   = parseInt(gap)
+        
+        var total = price + gap;
+        console.log(total)
+        
+        price = price.toString();
+        gap   = gap.toString();
+        total = total.toString();
+        
+        document.getElementById("price").innerHTML  = Web3.utils.fromWei(price) + " BCH";
+        document.getElementById("gap").innerHTML    = Web3.utils.fromWei(gap)   + " BCH";
+        document.getElementById("BIGGER").innerHTML = Web3.utils.fromWei(total) + " BCH";
+        document.getElementById("sth").innerHTML    = sth;
+        
+        document.getElementById("urprice").min   = Web3.utils.fromWei(total);
+        document.getElementById("urprice").value = Web3.utils.fromWei(total);
+        
+        
+        console.log(sth);
+        console.log(price);
+        //return sth, price;
+        
+        
+    };
+    
+    
+
+    
+    //const web3 = new Web3(new Web3.providers.HttpProvider("https://smartbch.fountainhead.cash/mainnet"));
+    //console.log(web3);
+    var ct_addr = "0x35b2dA94A08980DB5FBA6D9a980761e72e5Eb80b";
+    let contract = new web3.eth.Contract(myABI, ct_addr);
+    //var s = await contract.methods.what_do_you_say().call()
+    //connect2metamask()
+    let sth;
+    let nowprice;
+    get_data();
+    
+    console.log(sth+nowprice)
+    
+    /*
+    var s = what_do_you_say();
+    let sth;
+    s.then(function(value){ sth = value});
+    console.log(sth);
+    */
+
+
+
+
+
+    // ha = await contract.methods.pay_me_and_say_sth("2nd change with we3.js").send({from:address, value:4})
+    // ha.events.aPayment.returnValues.buyer
+    // ha.events.aPayment.returnValues.price
+
+
+
+
+
+
+</script>
+</head>
+<body class="container">
+  <h1>Messy Speaker !! beta</h1>
+  <br>
+  <br>
+  <br>
+  <div class="table-responsive"> 
+  <h4>The String in contract NOW:</h4>
+  <h1 id="sth">SHOW ME WHAT YOU GOT</h1>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th id="price">Messy</th>
+          <th>Last Highest Payment</th>
+        </tr>
+      </thead>
+      <thead>
+        <tr>
+          <th id="gap">Messy</th>
+          <th>Gap Now</th>
+        </tr>
+      </thead>
+      <thead>
+        <tr>
+          <th id="BIGGER"> > this </th>
+          <th>You Need To Pay More Than This Price</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  
+  <h5>Say SOMETHING</h5><input type="text" size="150" id="usay" />
+  <h5>Price (BCH)</h5><input type="number" min="0.00" step="0.0005" size="50" id="urprice" />
+  <a href="#" onclick="connect2metamask(document.getElementById('usay').value, document.getElementById('urprice').value)" class="btn btn-primary">Speak Out Loud</a>
+  <h5>TIPS : Input something you want to say and pay me some BCH <br><br>
+  I will use my Noise account Messy create a post with something you want to saying<BR><br>
+  ThePriceYouPay >= LastHighestPrice + Gap<BR><BR>
+  After finishing payment you need to Refresh the webpage to see the new change on chain<BR><BR>
+  And also check the Noise 酷耶 channel to see Messy Speaker saying your words!!<br><br>
+  If you meet any problem just send message to my Noise Post https://noise.cash/post/17n0j246<h5>
+</body>
+
+</html>
